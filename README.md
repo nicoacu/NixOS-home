@@ -1,4 +1,4 @@
-`sudo nano /etc/configuration.nix/` to install pkgs
+`sudo nano /etc/nixos/configuration.nix/` to install pkgs
 
 `sudo nixos-rebuild --upgrade-all switch` to make the package manager rebuild the system with the new changes (and the --upgrade-all to update packages)
 
