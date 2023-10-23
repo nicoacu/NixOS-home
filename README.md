@@ -16,7 +16,9 @@ nix-env --rollback
 ```
 
 ```
+nix-env --list-generations # see all generations
 nix-env --unistall firefox # package isn't deleted right away as it might be needed for a rollback
 nix-collect-garbage # deletes all packages that aren't in use by any user profile or by a currently running program
 ```
 
+good vod to have as a reference: https://youtube.com/watch?v=AGVXJ-TKv3Y

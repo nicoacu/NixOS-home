@@ -4,10 +4,15 @@
 
 { config, pkgs, ... }:
 
+let
+  user="nacu";
+in
+
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+
     ];
 
   # Bootloader.
@@ -79,10 +84,10 @@
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.nacu = {
+  users.users.${user} = {
     isNormalUser = true;
     description = "Nico";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     packages = with pkgs; [
       firefox
     #  thunderbird
@@ -95,12 +100,18 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-	vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-	wget
-	git
-	docker
-	vscode
-	go
+	  vim
+	  wget
+	  git
+	  docker
+	  vscode
+	  go
+    coreutils
+    nano
+    htop
+    nixos-icons
+    direnv
+
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
