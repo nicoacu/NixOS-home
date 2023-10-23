@@ -1,3 +1,5 @@
+pkgs can be find out in https://search.nixos.org
+
 `sudo nano /etc/nixos/configuration.nix/` to install pkgs
 
 `sudo nixos-rebuild --upgrade-all switch` to make the package manager rebuild the system with the new changes (and the --upgrade-all to update packages)
@@ -17,3 +19,4 @@ nix-env --rollback
 nix-env --unistall firefox # package isn't deleted right away as it might be needed for a rollback
 nix-collect-garbage # deletes all packages that aren't in use by any user profile or by a currently running program
 ```
+
