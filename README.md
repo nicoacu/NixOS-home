@@ -1,3 +1,5 @@
+## Draft
+
 pkgs can be find out in https://search.nixos.org
 
 `sudo nano /etc/nixos/configuration.nix/` to install pkgs
@@ -6,9 +8,39 @@ pkgs can be find out in https://search.nixos.org
 
 `nix-shell -p <list of packages>` to create ephimeral shells with the packages included in the list. once you exit the shell they no longer exist in the system (good option to try a program before installing it)
 
+## Home-manager
 
+_(Notice that most commands should be run with sudo as home-manager interacts with configuration.nix, which is placed at /etc/nixos)_
 
-additional stuff: 
+Check the Nixpkgs version that im following with
+
+```
+sudo nix-channel --list
+```
+
+then try to find a matching release from home-manager, for example for Nixpkgs version 23.05:
+
+```
+sudo nix-channel --add https://github.com/nix-community/home-manager/archive/release-23.05.tar.gz home-manager
+sudo nix-channel --update
+```
+
+then, if the home-manager is loaded as a NixOS module, check that the configuration.nix has the home.stateVersion specified. e.g:
+
+```
+home-manager.users.${user} = { pkgs, ... }: {
+
+    home.packages = with pkgs; [ vscode ]
+    home.stateVersion = "23.05"; 
+
+  };
+```
+
+once this is done just `nixos-rebuild` all over again.
+
+More info at: https://nix-community.github.io/home-manager/index.html#sec-install-nixos-module
+
+## Additional stuff: 
 
 ```
 nix-env --upgrade some-packages
