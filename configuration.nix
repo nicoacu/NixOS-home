@@ -99,20 +99,19 @@ in
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = with pkgs;   
+    [
 	  vim
 	  wget
 	  git
 	  docker
-	  vscode
 	  go
     coreutils
     nano
     htop
     nixos-icons
     direnv
-
-  ];
+    ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -143,9 +142,18 @@ in
 
   home-manager.users.${user} = { pkgs, ... }: {
 
-    #home.packages = with pkgs; [ vscode ]
-    home.stateVersion = "23.05"; 
+    nixpkgs.config.allowUnfree = true;
+    home.packages = with pkgs; [ vscode ];
+    home.stateVersion = "23.05";
+    programs.vscode.enable = true;
+    programs.vscode.extensions = with pkgs.vscode-extensions; [ 
+      golang.go 
+      mikestead.dotenv 
+      yzhang.markdown-all-in-one 
+      bbenoist.nix 
+      ms-python.python ];
 
   };
+  
 
 }
