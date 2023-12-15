@@ -111,6 +111,7 @@ in
     htop
     nixos-icons
     direnv
+    unstable.vscode
     ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -143,15 +144,15 @@ in
   home-manager.users.${user} = { pkgs, ... }: {
 
     nixpkgs.config.allowUnfree = true;
-    home.packages = with pkgs; [ vscode ];
-    home.stateVersion = "23.05";
-    programs.vscode.enable = true;
-    programs.vscode.extensions = with pkgs.vscode-extensions; [ 
-      golang.go 
-      mikestead.dotenv 
-      yzhang.markdown-all-in-one 
-      bbenoist.nix 
-      ms-python.python ];
+    #home.packages = with pkgs; [ vscode ];
+    #home.stateVersion = "23.05";
+    #programs.vscode.enable = true;
+    #programs.vscode.extensions = with pkgs.vscode-extensions; [ 
+    #  golang.go 
+    #  mikestead.dotenv 
+    #  yzhang.markdown-all-in-one 
+    #  bbenoist.nix 
+    #  ms-python.python ];
 
   };
   
