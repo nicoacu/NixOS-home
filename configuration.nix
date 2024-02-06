@@ -4,15 +4,11 @@
 
 { config, pkgs, ... }:
 
-let
-  user="nacu";
-in
-
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      <home-manager/nixos>
+      ./homemanager.nix
     ];
 
   # Bootloader.
@@ -50,15 +46,18 @@ in
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-  # Enable the Deepin Desktop Environment.
-  services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.desktopManager.deepin.enable = true;
+  # Enable the GNOME Desktop Environment.
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
   services.xserver = {
-    layout = "us";
+    layout = "latam";
     xkbVariant = "";
   };
+
+  # Configure console keymap
+  console.keyMap = "la-latin1";
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -84,10 +83,10 @@ in
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${user} = {
+  users.users.nacuna = {
     isNormalUser = true;
     description = "Nico";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       firefox
     #  thunderbird
@@ -99,20 +98,15 @@ in
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs;   
-    [
-	  vim
-	  wget
-	  git
-	  docker
-	  go
-    coreutils
-    nano
-    htop
-    nixos-icons
-    direnv
-    unstable.vscode
-    ];
+  
+  environment.systemPackages = with pkgs; [
+    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    neofetch
+    wget
+    curl
+    git
+    kitty
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -139,22 +133,6 @@ in
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.05"; # Did you read the comment?
-
-  home-manager.users.${user} = { pkgs, ... }: {
-
-    nixpkgs.config.allowUnfree = true;
-    #home.packages = with pkgs; [ vscode ];
-    #home.stateVersion = "23.05";
-    #programs.vscode.enable = true;
-    #programs.vscode.extensions = with pkgs.vscode-extensions; [ 
-    #  golang.go 
-    #  mikestead.dotenv 
-    #  yzhang.markdown-all-in-one 
-    #  bbenoist.nix 
-    #  ms-python.python ];
-
-  };
-  
+  system.stateVersion = "23.11";
 
 }
