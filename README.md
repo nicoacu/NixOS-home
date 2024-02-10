@@ -55,3 +55,37 @@ sudo nix-collect-garbage -d #remove ALL but current generation (generation = Nix
 ```
 
 Good vod to have as a reference: https://youtube.com/watch?v=AGVXJ-TKv3Y
+
+## How to add second hard drive HDD
+
+(fstab can't be modified)
+
+Check disks and partitions with:
+
+```
+fdisk -l
+lsblk
+```
+
+Identify which partition you want to mount and then
+
+```
+mount /dev/sdb2 /home
+nixos-generate-config
+```
+
+you will see this:
+
+```
+writing /etc/nixos/hardware-configuration.nix…
+warning: not overwriting existing /etc/nixos/configuration.nix
+```
+
+which is expected (as configuration.nix shouldn't be modified by this). you can check if the disk is mounted in boot reading `hardware-configuration.nix`
+finish with 
+
+```
+sudo nixos-rebuild switch
+```
+
+source: https://discourse.nixos.org/t/how-to-add-second-hard-drive-hdd/6132/1
