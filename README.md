@@ -93,3 +93,4 @@ source: https://discourse.nixos.org/t/how-to-add-second-hard-drive-hdd/6132/1
 ### Other stuff
 
 passwordless openssh configurations: https://www.reddit.com/r/NixOS/comments/ebgezb/passwordless_ssh_authentication_in_nixos/
+to add maximize/minimize: gnome-tweaks in nix-shell (`nix-shell -p gnome.gnome-tweaks`)
