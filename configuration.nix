@@ -107,17 +107,44 @@
     neofetch
     wget
     curl
-    git
-    gitflow
-    kitty
     spotify
-    python3
     vagrant # investigar alternativa con deploy-rs o nixops/morph
     openlens
     kubectl
+    kustomize
     ansible
-    # docker
     unzip
+    zoom-us
+    masterpdfeditor
+
+    ## Guake Terminal
+    # Note: might have issues using F12 to open and close the window. workaround: https://github.com/Guake/guake/issues/1642#issuecomment-580668579 until I find/create a declarative way to fix it
+    guake
+
+    ## Utilities
+    jq # lightweight and flexible command-line json processor
+    envsubst # env var substitution for go
+
+    ## Development
+    git
+    gitflow
+    nodejs_21
+    python3
+    docker-compose
+    go
+    hugo
+    gccgo13 #system c compiler (wrapper script) needed in hugo extended
+
+    ## Packet Tracer Cisco (Disclaimer: is a garron to install)
+    # 1) Download 8.21 version: https://www.netacad.com/portal/resources/file/f40aaa18-2b25-4337-81a3-8f989232abf6
+    #
+    # 2) Add to the nix store with
+    # nix-store --add-fixed sha256 CiscoPacketTracer822_amd64_signed.deb
+    # and/or
+    # nix-prefetch-url --type sha256 file://~/Downloads/CiscoPacketTracer_821_Ubuntu_64bit.deb
+    #
+    # 3) Add the pkg below and rebuild.
+    ciscoPacketTracer8
   ];
 
   ## Enable virtualbox (this includes the kernel modules and all the shenanigans)
@@ -125,8 +152,8 @@
   virtualisation.virtualbox.guest.enable = true;
   virtualisation.virtualbox.host.headless = false; #to control virtualbox with cli and not GUI
 
+  ## Enable docker
   virtualisation.docker.enable = true;
-  # virtualisation.docker.storageDriver = "btrfs";
   virtualisation.docker.rootless = {
     enable = true;
     setSocketVariable = true;
