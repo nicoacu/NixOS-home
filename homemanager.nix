@@ -4,7 +4,10 @@
   pkgs,
   ...
 }: let
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-23.11.tar.gz";
+  home-manager = builtins.fetchTarball {
+    url = "https://github.com/nix-community/home-manager/archive/release-23.11.tar.gz";
+    sha256 = "0r19x4n1wlsr9i3w4rlc4jc5azhv2yq1n3qb624p0dhhwfj3c3vl";
+  };
 in {
   imports = [
     (import "${home-manager}/nixos")
@@ -27,6 +30,9 @@ in {
         esbenp.prettier-vscode
         oderwat.indent-rainbow
         tamasfe.even-better-toml
+        ## Github Copilot stuff
+        github.copilot
+        github.copilot-chat
       ];
       #        ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
       #          {

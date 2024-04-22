@@ -13,12 +13,21 @@
     ./homemanager.nix
   ];
 
+  # Enable flakes feature.
+  nix.settings.experimental-features = ["nix-command" "flakes"];
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.configurationLimit = 5; # only keep 5 generations in the bootloader.
 
   networking.hostName = "roach"; # Define your hostname.
+
+  # Add another dns in /etc/hosts
+  networking.extraHosts = ''
+    127.0.0.1 expedientes.local
+  '';
+
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -27,6 +36,8 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+  # REVIEW: Increased timeout of NetworkManager-wait-online.service so it can wait for the virtualbox network to be up
+  systemd.services.NetworkManager-wait-online.serviceConfig.TimeoutStartSec = "2min";
 
   # Set your time zone.
   time.timeZone = "America/Argentina/Buenos_Aires";
@@ -115,7 +126,9 @@
     ansible
     unzip
     zoom-us
+    discord
     masterpdfeditor
+    google-chrome #unfree
 
     ## Guake Terminal
     # Note: might have issues using F12 to open and close the window. workaround: https://github.com/Guake/guake/issues/1642#issuecomment-580668579 until I find/create a declarative way to fix it
@@ -124,6 +137,8 @@
     ## Utilities
     jq # lightweight and flexible command-line json processor
     envsubst # env var substitution for go
+    freerdp # RDP client
+    dig # DNS lookup utility
 
     ## Development
     git
@@ -135,15 +150,17 @@
     hugo
     gccgo13 #system c compiler (wrapper script) needed in hugo extended
 
-    ## Packet Tracer Cisco (Disclaimer: is a garron to install)
-    # 1) Download 8.21 version: https://www.netacad.com/portal/resources/file/f40aaa18-2b25-4337-81a3-8f989232abf6
+    ## Cloud
+    google-cloud-sdk
+
+    ## Packet Tracer Cisco https://nixos.wiki/wiki/Packettracer (Disclaimer: is a garron to install)
+    # 1) Download latest version: https://www.netacad.com/portal/resources/file/f40aaa18-2b25-4337-81a3-8f989232abf6
     #
     # 2) Add to the nix store with
     # nix-store --add-fixed sha256 CiscoPacketTracer822_amd64_signed.deb
     # and/or
-    # nix-prefetch-url --type sha256 file://~/Downloads/CiscoPacketTracer_821_Ubuntu_64bit.deb
-    #
-    # 3) Add the pkg below and rebuild.
+    # nix-prefetch-url --type sha256 file://$HOME/Downloads/CiscoPacketTracer822_amd64_signed.deb
+    # 3) add the package below
     ciscoPacketTracer8
   ];
 
