@@ -13,6 +13,46 @@
     ./homemanager.nix
   ];
 
+  # @nicoacu 16-10-24: adding nvidia settings temporarily here. should be on a nvidia.nix file
+  # Enable OpenGL
+  #hardware.opengl = {
+  #  enable = true;
+  #};
+
+  # Load nvidia driver for Xorg and Wayland
+  #services.xserver.videoDrivers = ["nvidia"];
+
+  #hardware.nvidia = {
+  # Modesetting is required.
+  #  modesetting.enable = true;
+
+  # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
+  # Enable this if you have graphical corruption issues or application crashes after waking
+  # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead
+  # of just the bare essentials.
+  #  powerManagement.enable = true;
+
+  # Fine-grained power management. Turns off GPU when not in use.
+  # Experimental and only works on modern Nvidia GPUs (Turing or newer).
+  #  powerManagement.finegrained = false;
+
+  # Use the NVidia open source kernel module (not to be confused with the
+  # independent third-party "nouveau" open source driver).
+  # Support is limited to the Turing and later architectures. Full list of
+  # supported GPUs is at:
+  # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
+  # Only available from driver 515.43.04+
+  # Currently alpha-quality/buggy, so false is currently the recommended setting.
+  # open = false;
+
+  # Enable the Nvidia settings menu,
+  # accessible via `nvidia-settings`.
+  #  nvidiaSettings = true;
+
+  # Optionally, you may need to select the appropriate driver version for your specific GPU.
+  #  package = config.boot.kernelPackages.nvidiaPackages.stable;
+  #  };
+
   # Enable flakes feature.
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
@@ -26,7 +66,12 @@
   # Add another dns in /etc/hosts
   networking.extraHosts = ''
     127.0.0.1 expedientes.local
+    192.168.0.63 berrypi.traefik
   '';
+
+  #@nia: bandaid fix to taking long time to load pages in firefox according to https://discourse.nixos.org/t/long-loading-in-firefox/25055/3
+  networking.enableIPv6 = false;
+  boot.kernelParams = ["ipv6.disable=1"];
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -121,6 +166,7 @@
     spotify
     vagrant # investigar alternativa con deploy-rs o nixops/morph
     openlens
+    k9s
     kubectl
     kustomize
     ansible
@@ -129,6 +175,9 @@
     discord
     masterpdfeditor
     google-chrome #unfree
+    vesktop
+    obs-studio
+    vlc
 
     ## Guake Terminal
     # Note: might have issues using F12 to open and close the window. workaround: https://github.com/Guake/guake/issues/1642#issuecomment-580668579 until I find/create a declarative way to fix it
@@ -139,19 +188,25 @@
     envsubst # env var substitution for go
     freerdp # RDP client
     dig # DNS lookup utility
+    openssl
 
     ## Development
     git
     gitflow
-    nodejs_21
+    nodejs_22
     python3
     docker-compose
     go
     hugo
     gccgo13 #system c compiler (wrapper script) needed in hugo extended
+    minikube
 
     ## Cloud
     google-cloud-sdk
+    terraform
+    obsidian
+    kubernetes-helm
+    argocd
 
     ## Packet Tracer Cisco https://nixos.wiki/wiki/Packettracer (Disclaimer: is a garron to install)
     # 1) Download latest version: https://www.netacad.com/portal/resources/file/f40aaa18-2b25-4337-81a3-8f989232abf6
@@ -209,5 +264,10 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "23.11";
+
+  # About Updates: https://nixos.org/manual/nixos/stable/index.html#sec-upgrading
+  system.autoUpgrade.enable = true;
+  system.autoUpgrade.allowReboot = false;
 }
