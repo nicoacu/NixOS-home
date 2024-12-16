@@ -6,18 +6,18 @@
 }: let
   lib = pkgs.lib;
   home-manager = builtins.fetchTarball {
-    url = "https://github.com/nix-community/home-manager/archive/release-23.11.tar.gz";
-    sha256 = "0r19x4n1wlsr9i3w4rlc4jc5azhv2yq1n3qb624p0dhhwfj3c3vl";
+    url = "https://github.com/nix-community/home-manager/archive/release-24.05.tar.gz";
+    sha256 = "00wp0s9b5nm5rsbwpc1wzfrkyxxmqjwsc1kcibjdbfkh69arcpsn";
   };
   ### workaround to install Obsidian https://forum.obsidian.md/t/electron-25-is-now-eol-please-upgrade-to-a-newer-version/72878/7
-  obsidian = lib.throwIf (lib.versionOlder "1.4.16" pkgs.obsidian.version) "Obsidian no longer requires EOL Electron" (
-    pkgs.obsidian.override {
-      electron = pkgs.electron_25.overrideAttrs (_: {
-        preFixup = "patchelf --add-needed ${pkgs.libglvnd}/lib/libEGL.so.1 $out/bin/electron"; # NixOS/nixpkgs#272912
-        meta.knownVulnerabilities = []; # NixOS/nixpkgs#273611
-      });
-    }
-  );
+  #  obsidian = lib.throwIf (lib.versionOlder "1.4.16" pkgs.obsidian.version) "Obsidian no longer requires EOL Electron" (
+  #    pkgs.obsidian.override {
+  #      electron = pkgs.electron_25.overrideAttrs (_: {
+  #        preFixup = "patchelf --add-needed ${pkgs.libglvnd}/lib/libEGL.so.1 $out/bin/electron"; # NixOS/nixpkgs#272912
+  #        meta.knownVulnerabilities = []; # NixOS/nixpkgs#273611
+  #      });
+  #    }
+  #  );
   ###
 in {
   imports = [
@@ -88,6 +88,6 @@ in {
     /*
     Here goes the rest of your home-manager config, e.g. home.packages = [ pkgs.foo ];
     */
-    home.packages = [obsidian];
+    #    home.packages = [obsidian];
   };
 }
