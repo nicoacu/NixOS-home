@@ -122,7 +122,7 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  sound.enable = true;
+  #sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -165,7 +165,7 @@
     curl
     spotify
     vagrant # investigar alternativa con deploy-rs o nixops/morph
-    openlens
+    lens
     k9s
     kubectl
     kustomize
@@ -216,7 +216,7 @@
     # and/or
     # nix-prefetch-url --type sha256 file://$HOME/Downloads/CiscoPacketTracer822_amd64_signed.deb
     # 3) add the package below
-    ciscoPacketTracer8
+    #ciscoPacketTracer8
   ];
 
   ## Enable virtualbox (this includes the kernel modules and all the shenanigans)

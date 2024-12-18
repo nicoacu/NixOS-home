@@ -4,11 +4,12 @@
   pkgs,
   ...
 }: let
+  #system = "x86_64-linux"; # for zen https://medium.com/@notquitethereyet_/installing-zen-browser-on-nixos-%EF%B8%8F-7ae541f5533f
   lib = pkgs.lib;
-  home-manager = builtins.fetchTarball {
-    url = "https://github.com/nix-community/home-manager/archive/release-24.05.tar.gz";
-    sha256 = "00wp0s9b5nm5rsbwpc1wzfrkyxxmqjwsc1kcibjdbfkh69arcpsn";
-  };
+  #home-manager = builtins.fetchTarball {
+  #  url = "https://github.com/nix-community/home-manager/archive/release-24.05.tar.gz";
+  #  sha256 = "00wp0s9b5nm5rsbwpc1wzfrkyxxmqjwsc1kcibjdbfkh69arcpsn";
+  #};
   ### workaround to install Obsidian https://forum.obsidian.md/t/electron-25-is-now-eol-please-upgrade-to-a-newer-version/72878/7
   #  obsidian = lib.throwIf (lib.versionOlder "1.4.16" pkgs.obsidian.version) "Obsidian no longer requires EOL Electron" (
   #    pkgs.obsidian.override {
@@ -20,9 +21,9 @@
   #  );
   ###
 in {
-  imports = [
-    (import "${home-manager}/nixos")
-  ];
+  #imports = [
+  #  (import "${home-manager}/nixos")
+  #];
 
   home-manager.users.nacuna = {
     nixpkgs.config.allowUnfree = true;
@@ -41,6 +42,8 @@ in {
         esbenp.prettier-vscode
         oderwat.indent-rainbow
         tamasfe.even-better-toml
+        #pomdtr.excalidraw-editor
+        #vsliveshare.vsliveshare
         ## Github Copilot stuff
         github.copilot
         github.copilot-chat
@@ -88,6 +91,11 @@ in {
     /*
     Here goes the rest of your home-manager config, e.g. home.packages = [ pkgs.foo ];
     */
-    #    home.packages = [obsidian];
+
+    programs.home-manager.enable = true;
+
+    home.packages = with pkgs; [
+      inputs.zen-browser.packages."${system}".specific
+    ];
   };
 }
