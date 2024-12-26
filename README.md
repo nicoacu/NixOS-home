@@ -1,3 +1,53 @@
+# NixOS notes for @nacuna
+
+
+
+# Index
+
+
+## Update with Flakes
+
+> from within the directory where the flake resides (i.e: /etc/nixos)
+
+```
+sudo nix flake update
+```
+
+*That checks the repos specified in the inputs part of the flake.nix and looks for newer commits, then rewrites the flake.lock to reflect the change.*
+
+*Then, is necessary to rebuild the system again*
+
+```
+sudo nixos-rebuild --flake .#roach switch
+```
+
+## Code Snippets explained
+
+```flake.nix
+outputs = {
+    self,
+    nixpkgs,
+    home-manager,
+    ...
+} @ inputs: { }
+```
+
+> Outputs: A function that, given an attribute set containing the outputs of each of the input flakes keyed by their identifier, yields the Nix values provided by this flake
+
+> So, outputs = {}: {} is a function assigned to a key within the attribute set (which is the flake itself).
+
+> The first pair of curly brackets {}: contains the function arguments, with the outputs provided by the other flakes (nixpkgs and home-manager found under respective urls listed in inputs).
+
+> The second pair of curly brackets {} is an attribute set, which is also the outputs function body. It contains all the key-value pairs which are to be made available for the reference as a flake output, either for standalone consumption, or as an input within some other flake.
+
+> In other words, first curly bracket is referencing the functions from the imported flakes, second curly bracket contains all the key-value pairs used to specify the desired configuration.
+
+## Useful Sources
+
+[How to convert default nixos to nixos with flakes](https://drakerossman.com/blog/how-to-convert-default-nixos-to-nixos-with-flakes)
+[How to add Home-Manager to Nixos](https://drakerossman.com/blog/how-to-add-home-manager-to-nixos)
+
+
 ## Draft
 
 Pkgs can be found at https://search.nixos.org
