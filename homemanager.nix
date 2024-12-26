@@ -26,10 +26,10 @@ in {
   #];
 
   home-manager.users.nacuna = {
-    nixpkgs.config.allowUnfree = true;
+    #nixpkgs.config.allowUnfree = true;
 
+    programs.vscode.enable = true;
     programs.vscode = {
-      enable = true;
       extensions = with pkgs.vscode-extensions; [
         ms-vscode-remote.remote-ssh
         eamodio.gitlens
@@ -66,24 +66,6 @@ in {
       #    ];
       #  };
     };
-
-    #    programs.kitty = {
-    #      enable = true;
-    #      theme = "Wild Cherry";
-    #      keybindings = {
-    #        "ctrl+c" = "copy_or_interrupt";
-    #        "ctrl+v" = "paste_from_clipboard";
-    #        "ctrl+l" = "scroll-and-clear-screen";
-    #      };
-    #    };
-
-    #    programs.bash = {
-    #      enable = true;
-    #      shellAliases = {
-    #        ssh = ''kitty +kitten ssh'';
-    #      };
-    #    };
-
     /*
     The home.stateVersion option does not have a default and must be set
     */
