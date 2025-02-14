@@ -13,15 +13,15 @@
     #    ./homemanager.nix
   ];
 
-  # Enable flakes feature.
-  nix = {
-    package = pkgs.nixFlakes;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-  };
+  # # Enable flakes feature.
+  # nix = {
+  #   package = pkgs.nixFlakes;
+  #   extraOptions = ''
+  #     experimental-features = nix-command flakes
+  #   '';
+  # };
 
-  #nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # Bootloader.
   boot = {
@@ -72,9 +72,9 @@
   services.xserver.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
-  services.xserver = {
+  services.xserver.xkb = {
     layout = "latam";
-    xkbVariant = "";
+    variant = "";
   };
 
   # Configure console keymap
@@ -85,7 +85,7 @@
 
   # Enable sound with pipewire.
   #sound.enable = true;
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -104,11 +104,38 @@
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
+  programs = {
+    zsh = {
+      enable = true;
+      enableCompletion = true;
+      autosuggestions.enable = true;
+      syntaxHighlighting.enable = true;
+      promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+      ohMyZsh = {
+        enable = true;
+        plugins = [
+          "sudo"
+          "terraform"
+          "systemadmin"
+          "vi-mode"
+          "git"
+          "docker"
+          "docker-compose"
+          "kubectl"
+          "helm"
+          "aws"
+          "gcloud"
+        ];
+      };
+    };
+  };
+
   users.users.nacuna = {
     isNormalUser = true;
     createHome = true;
     description = "Nico";
     extraGroups = ["networkmanager" "wheel" "vboxusers" "docker"];
+    shell = pkgs.zsh;
   };
 
   # Allow unfree packages
@@ -117,31 +144,32 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
 
+  environment.pathsToLink = ["/share/zsh"];
   environment.systemPackages = with pkgs; [
+    ## --- General ----
     vim
     neofetch
-
     spotify
-    vagrant # investigar alternativa con deploy-rs o nixops/morph
+    #vagrant # investigar alternativa con deploy-rs o nixops/morph
     lens
-    k9s
+    #k9s
     kubectl
     kustomize
     ansible
     unzip
-    zoom-us
-    discord
+    #zoom-us
+    #discord
     masterpdfeditor
-    google-chrome #unfree
-    vesktop
-    obs-studio
+    #google-chrome #unfree
+    #vesktop
+    #obs-studio
     vlc
 
-    ## Guake Terminal
+    ## --- Guake Terminal ----
     # Note: might have issues using F12 to open and close the window. workaround: https://github.com/Guake/guake/issues/1642#issuecomment-580668579 until I find/create a declarative way to fix it
     guake
 
-    ## Utilities
+    ## --- Utilities ----
     wget
     curl
     jq # lightweight and flexible command-line json processor
@@ -151,29 +179,38 @@
     openssl
     tree
 
-    ## Development
+    ## --- Development ----
     git
     gitflow
     nodejs_22
     python3
     docker-compose
-    go
-    hugo
+    #go
+    #hugo
     gccgo13 #system c compiler (wrapper script) needed in hugo extended
-    minikube
+    #minikube
 
-    ## Cloud
-    google-cloud-sdk
-    terraform
+    ## --- Cloud ----
+    #google-cloud-sdk
+    #terraform
     obsidian
-    kubernetes-helm
-    argocd
+    #kubernetes-helm
+    #argocd
+  ];
+
+  fonts.packages = with pkgs; [
+    # Options: https://github.com/NixOS/nixpkgs/blob/8764d898c4f365d98ef77af140b32c6396eb4e02/pkgs/data/fonts/nerdfonts/shas.nix
+    nerd-fonts.fira-code
+    nerd-fonts.meslo-lg
+    noto-fonts
+    emacs-all-the-icons-fonts
+    font-awesome
   ];
 
   ## Enable virtualbox (this includes the kernel modules and all the shenanigans)
-  virtualisation.virtualbox.host.enable = true;
-  virtualisation.virtualbox.guest.enable = true;
-  virtualisation.virtualbox.host.headless = false; #to control virtualbox with cli and not GUI
+  #virtualisation.virtualbox.host.enable = true;
+  #virtualisation.virtualbox.guest.enable = true;
+  #virtualisation.virtualbox.host.headless = false; #to control virtualbox with cli and not GUI
 
   ## Enable docker
   virtualisation.docker.enable = true;

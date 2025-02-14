@@ -157,3 +157,46 @@ source: https://discourse.nixos.org/t/how-to-add-second-hard-drive-hdd/6132/1
 - passwordless openssh configurations: https://www.reddit.com/r/NixOS/comments/ebgezb/passwordless_ssh_authentication_in_nixos/
 
 - to add maximize/minimize: gnome-tweaks in nix-shell (`nix-shell -p gnome.gnome-tweaks`)
+
+## Troubleshooting history
+
+#### Zen-Browser
+
+After a flake update, I had this error
+
+```
+       … while evaluating the option `system.build.toplevel':
+
+       … while evaluating definitions from `/nix/store/8fwsiv0hd7nw1brkvka0jf1frk3m7qkr-source/nixos/modules/system/activation/top-level.nix':
+
+       … while evaluating the option `warnings':
+
+       … while evaluating definitions from `/nix/store/8fwsiv0hd7nw1brkvka0jf1frk3m7qkr-source/nixos/modules/system/boot/systemd.nix':
+
+       … while evaluating the option `systemd.services.home-manager-nacuna.serviceConfig':
+
+       … while evaluating definitions from `/nix/store/8fwsiv0hd7nw1brkvka0jf1frk3m7qkr-source/flake.nix':
+
+       … while evaluating the option `home-manager.users.nacuna.home.activation.installPackages.data':
+
+       … while evaluating definitions from `/nix/store/xm5jfczg8vk87z70x0rcrjr04j1m6gbc-source/modules/home-environment.nix':
+
+       … while evaluating the option `home-manager.users.nacuna.home.packages':
+
+       … while evaluating definitions from `/nix/store/8fwsiv0hd7nw1brkvka0jf1frk3m7qkr-source/flake.nix':
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: attribute 'specific' missing
+       at /nix/store/6281i3hip7zlldrq1j5m8jlhsnflafxg-source/homemanager.nix:56:5:
+           55|   home.packages = with pkgs; [
+           56|     inputs.zen-browser.packages."${system}".specific
+             |     ^
+           57|   ];
+```
+
+It seemed like the specific attribute didn't exist anymore, so I had to check the repository to see if the mantainer changed it.
+
+This flake reference: `github:0xc000022070/zen-browser-flake` is equivalent to `https://github.com/0xc000022070/zen-browser-flake`
+
+Here's the [commit change](https://github.com/0xc000022070/zen-browser-flake/commit/053867dee417fc01a0ad33de48c5a78684d80e52).
