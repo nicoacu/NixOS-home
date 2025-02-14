@@ -49,7 +49,7 @@ sudo nix-collect-garbage -d
 ```
 
 ```
-sudo nix-store --optimise
+sudo nix-store --optimise -vv
 ```
 
 ## Useful Sources
