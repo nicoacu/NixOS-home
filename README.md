@@ -56,7 +56,7 @@ sudo nix-store --optimise
 
 [How to convert default nixos to nixos with flakes](https://drakerossman.com/blog/how-to-convert-default-nixos-to-nixos-with-flakes)
 [How to add Home-Manager to Nixos](https://drakerossman.com/blog/how-to-add-home-manager-to-nixos)
-
+[Friendly reminder: optimize-store is not on by default and you may be using a lot of disk space](https://old.reddit.com/r/NixOS/comments/1cunvdw/friendly_reminder_optimizestore_is_not_on_by/)
 
 ## Draft
 
