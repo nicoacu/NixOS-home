@@ -42,6 +42,16 @@ outputs = {
 
 > In other words, first curly bracket is referencing the functions from the imported flakes, second curly bracket contains all the key-value pairs used to specify the desired configuration.
 
+## Free space and Optimization
+
+```
+sudo nix-collect-garbage -d
+```
+
+```
+sudo nix-store --optimise
+```
+
 ## Useful Sources
 
 [How to convert default nixos to nixos with flakes](https://drakerossman.com/blog/how-to-convert-default-nixos-to-nixos-with-flakes)
