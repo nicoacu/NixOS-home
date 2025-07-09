@@ -5,7 +5,7 @@
   ...
 }: {
   programs.vscode.enable = true;
-  programs.vscode = {
+  programs.vscode.profiles.default = {
     extensions = with pkgs.vscode-extensions; [
       ms-vscode-remote.remote-ssh
       eamodio.gitlens
@@ -14,7 +14,7 @@
       yzhang.markdown-all-in-one
       bbenoist.nix
       kamadorueda.alejandra
-      ms-python.python
+      #ms-python.python
       esbenp.prettier-vscode
       oderwat.indent-rainbow
       tamasfe.even-better-toml

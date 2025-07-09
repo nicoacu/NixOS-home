@@ -104,30 +104,35 @@
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  programs = {
-    zsh = {
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    autosuggestions.enable = true;
+    syntaxHighlighting.enable = true;
+    promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+    ohMyZsh = {
       enable = true;
-      enableCompletion = true;
-      autosuggestions.enable = true;
-      syntaxHighlighting.enable = true;
-      promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-      ohMyZsh = {
-        enable = true;
-        plugins = [
-          "sudo"
-          "terraform"
-          "systemadmin"
-          "vi-mode"
-          "git"
-          "docker"
-          "docker-compose"
-          "kubectl"
-          "helm"
-          "aws"
-          "gcloud"
-        ];
-      };
+      plugins = [
+        "sudo"
+        "terraform"
+        "systemadmin"
+        "vi-mode"
+        "git"
+        "docker"
+        "docker-compose"
+        "kubectl"
+        "helm"
+        "aws"
+        "gcloud"
+      ];
     };
+  };
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = false; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = false; # Open ports in the firewall for Source Dedicated Server
+    localNetworkGameTransfers.openFirewall = false; # Open ports in the firewall for Steam Local Network Game Transfers
   };
 
   users.users.nacuna = {
@@ -160,10 +165,13 @@
     #zoom-us
     #discord
     masterpdfeditor
-    #google-chrome #unfree
-    #vesktop
-    #obs-studio
+    google-chrome #unfree
+    vesktop
+    obs-studio
     vlc
+    obsidian
+    kdePackages.dolphin
+    multipass
 
     ## --- Guake Terminal ----
     # Note: might have issues using F12 to open and close the window. workaround: https://github.com/Guake/guake/issues/1642#issuecomment-580668579 until I find/create a declarative way to fix it
@@ -185,15 +193,21 @@
     nodejs_22
     python3
     docker-compose
-    #go
-    #hugo
+    go
+    hugo
     gccgo13 #system c compiler (wrapper script) needed in hugo extended
     #minikube
+    python312Packages.pip
+    #minio-client
+    #tilt
+    mkcert
+    nss_latest
+    #kubernetes-helm
+    jenkins
 
     ## --- Cloud ----
     #google-cloud-sdk
     #terraform
-    obsidian
     #kubernetes-helm
     #argocd
   ];
@@ -206,6 +220,10 @@
     emacs-all-the-icons-fonts
     font-awesome
   ];
+
+  virtualisation.multipass.enable = true;
+  virtualisation.libvirtd.enable = true;
+  virtualisation.kvmgt.enable = true;
 
   ## Enable virtualbox (this includes the kernel modules and all the shenanigans)
   #virtualisation.virtualbox.host.enable = true;
@@ -238,4 +256,6 @@
   # About Updates: https://nixos.org/manual/nixos/stable/index.html#sec-upgrading
   system.autoUpgrade.enable = true;
   system.autoUpgrade.allowReboot = false;
+
+  security.pki.certificateFiles = [./certs/rootCA.pem];
 }
